@@ -1,10 +1,23 @@
 var repoNameEl = document.querySelector("#repo-name");
 var issueContainerEl = document.querySelector("#issues-container");
 var limitWarningEl = document.querySelector("#limit-warning");
-var queryString = document.location.search;
 
 
 
+
+var getFeaturedRepos = function(language) {
+    var apiUrl = "https://api.github.com/search/repositories?q=" + language + "+is:featured&sort=help-wanted-issues";
+  
+    fetch(apiUrl).then(function(response) {
+      if (response.ok) {
+        response.json().then(function(data) {
+       displayRepos(data.items, language);
+    });
+      } else {
+        alert('Error: GitHub User Not Found');
+      }
+    });
+  };
 
 function getRepoName() {
      // grab repo name from url query string
@@ -88,8 +101,8 @@ var displayWarning = function(repo) {
      limitWarningEl.textContent = "To see more than 30 issues, visit ";
     
      // create link element
-var linkEl = document.createElement("a");
-  linkEl.textContent = "See More Issues on GitHub.com";
+  var linkEl = document.createElement("a");
+  linkEl.textContent = " GitHub.com";
   linkEl.setAttribute("href", "https://github.com/" + repo + "/issues");
   linkEl.setAttribute("target", "_blank");
 
@@ -99,4 +112,4 @@ var linkEl = document.createElement("a");
 };
 
     
-getRepoName()
+getRepoName();
